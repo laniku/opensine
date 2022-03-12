@@ -24,9 +24,8 @@ fn main() {
             .title("Open audio file")
             .build();
         row.connect_activated(|_| {
-            Command::new("/bin/cat")
+            Command::new("/usr/bin/aplay")
                     .arg("/dev/urandom")
-                    .arg("| aplay")
                     .output()
                     .expect("failed to execute process");
         });
