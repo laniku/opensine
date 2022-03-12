@@ -1,8 +1,7 @@
 #[allow(unused_variables)]
 #[allow(unused_assignments)]
 #[allow(dead_code)]
-use std::env;
-use std::fs;
+use std::process::Command;
 use adw::prelude::*;
 use adw::{ActionRow, ApplicationWindow, HeaderBar};
 use adw::gtk::{Application, Box, ListBox, Orientation};
@@ -25,9 +24,11 @@ fn main() {
             .title("Open audio file")
             .build();
         row.connect_activated(|_| {
-            eprintln!("Choose a file name");
-            let args: Vec<String> = env::args().collect();
-            println!("{:?}", args);
+            Command::new("/bin/cat")
+                    .arg("/dev/urandom")
+                    .arg("| aplay")
+                    .output()
+                    .expect("failed to execute process");
         });
 
         let list = ListBox::builder()
