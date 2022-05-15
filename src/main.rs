@@ -1,7 +1,8 @@
 #[allow(unused_variables)]
 #[allow(unused_assignments)]
 #[allow(dead_code)]
-use std::process::Command;
+use std::env;
+use std::fs;
 use adw::prelude::*;
 use adw::{ActionRow, ApplicationWindow, HeaderBar};
 use adw::gtk::{Application, Box, ListBox, Orientation};
@@ -10,7 +11,7 @@ pub struct FileChooserDialog;
 
 fn main() {
     let application = Application::builder()
-        .application_id("cf.krnl286.lucas.opensine")
+        .application_id("io.github.laniku.opensine")
         .build();
 
     application.connect_startup(|_| {
@@ -21,31 +22,12 @@ fn main() {
         let row = ActionRow::builder()
             .activatable(true)
             .selectable(false)
-            .title("Open audio buffer")
+            .title("Open audio file")
             .build();
         row.connect_activated(|_| {
-            Command::new("/usr/bin/aplay")
-                    .arg("/dev/urandom")
-                    .output()
-                    .expect("failed to execute process");
-        });
-
-        let row = ActionRow::builder()
-            .activatable(true)
-            .selectable(false)
-            .title("Download and Initialize Midi Support")
-            .build();
-        row.connect_activated(|_| {
-            Command::new("/usr/bin/sudo")
-                    .arg("pacman")
-                    .arg("-Sy")
-                    .arg("fluidsynth")
-                    .arg("soundfont-fluid")
-                    .output()
-                    .expect("failed to execute process");
-            Command::new("SOUND_FONT=/usr/share/soundfonts/FluidR3_GM.sf2")
-                    .output()
-                    .expect("failed to execute process");
+            eprintln!("Choose a file name");
+            let args: Vec<String> = env::args().collect();
+            println!("{:?}", args);
         });
 
         let list = ListBox::builder()
